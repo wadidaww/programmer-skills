@@ -167,4 +167,19 @@ You are an expert software engineer with comprehensive knowledge across the enti
 
 ---
 
+## Shared Knowledge Base (all agents)
+
+Every agent participates in one shared memory about the repository under work, so knowledge discovered by one agent is available to all.
+
+- **Store knowledge in the repository** at `docs/knowledge/`, entered via `INDEX.md`, structured per `skills/knowledge-management/knowledge.md`.
+- **Retrieve first** — read `docs/knowledge/INDEX.md` before exploring an unfamiliar codebase; verify cited `file:line` evidence before acting on it.
+- **Capture when you learn** — durable discoveries (architecture, conventions, gotchas, working commands, decisions) are written back and indexed in the same task, not left in the conversation.
+- **One source of truth** — extend existing entries instead of creating parallel `NOTES.md` / `LEARNINGS.md` files.
+- **Keep it fresh** — update or mark `stale` any entry your change invalidates; log updates in `docs/knowledge/changelog.md`.
+- **Never store secrets** — no tokens, credentials, or private data in knowledge entries.
+
+Specialised roles: `agents/codebase-analyst.md` creates the initial knowledge base for a repository; `agents/knowledge-librarian.md` curates and retrieves it for other agents. Writing conventions: `skills/codebase-documentation/documentation.md`.
+
+---
+
 Apply the role-specific agent instructions in `agents/` for deeper expertise on specialised tasks.

@@ -10,6 +10,7 @@ This repository provides GitHub Copilot with:
 
 - **Role-specific agent instructions** — backend, frontend, full-stack, low-latency, QA, CI/CD, production, security, research, and more
 - **Domain skills** — coding standards, backend patterns, frontend patterns, system design, testing, security, performance, and CI/CD
+- **Shared knowledge base protocol** — agents capture what they learn about a repository in `docs/knowledge/` so every other agent can retrieve it later
 - **Global engineering guidelines** — architecture principles, code review standards, and software development best practices
 
 ---
@@ -26,9 +27,11 @@ programmer-skills/
 │   ├── backend-developer.md         # Backend engineer
 │   ├── ci-engineer.md               # CI/CD engineer
 │   ├── code-reviewer.md             # Code review specialist
+│   ├── codebase-analyst.md          # Repository onboarding / knowledge capture
 │   ├── devops-engineer.md           # DevOps / SRE
 │   ├── frontend-engineer.md         # Frontend engineer
 │   ├── fullstack-engineer.md        # Full-stack engineer
+│   ├── knowledge-librarian.md       # Shared knowledge curation & retrieval
 │   ├── lead-engineer.md             # Tech lead / staff engineer
 │   ├── low-latency-engineer.md      # High-performance / low-latency engineer
 │   ├── pipeline-engineer.md         # Data & ML pipeline engineer
@@ -40,8 +43,10 @@ programmer-skills/
 └── skills/                          # Reusable domain knowledge
     ├── backend-patterns/            # API, database, caching, messaging patterns
     ├── ci-cd/                       # CI/CD pipeline patterns and best practices
+    ├── codebase-documentation/      # Writing accurate, navigable repo documentation
     ├── coding-standards/            # Language-agnostic and language-specific standards
     ├── frontend-patterns/           # UI component, state, and performance patterns
+    ├── knowledge-management/        # Capture & retrieve shared codebase knowledge
     ├── performance/                 # Profiling, optimization, and low-latency techniques
     ├── security/                    # OWASP, secure coding, threat modelling
     ├── system-design/               # Architecture patterns and design principles
@@ -79,6 +84,22 @@ Invoke a skill directly in Copilot chat:
 @workspace Apply the patterns in skills/system-design/microservices.md
 ```
 
+### Shared Knowledge Base
+
+Agents do not work in isolation: every agent reads the repository's knowledge base before investigating, and writes durable findings back to it so the next agent starts informed.
+
+```
+1. Read  docs/knowledge/INDEX.md          ← retrieve what is already known
+2. Act  on verified entries (check file:line evidence)
+3. Write docs/knowledge/<area>.md          ← capture what you just learned
+4. Index it in INDEX.md and log changelog.md
+```
+
+- Bootstrap a repository's knowledge base with `agents/codebase-analyst.md`.
+- Keep it trustworthy and serve retrieval requests with `agents/knowledge-librarian.md`.
+- Protocol and entry format: `skills/knowledge-management/knowledge.md`.
+- Writing style and doc levels: `skills/codebase-documentation/documentation.md`.
+
 ---
 
 ## Roles Covered
@@ -89,9 +110,11 @@ Invoke a skill directly in Copilot chat:
 | Backend Developer | `agents/backend-developer.md` |
 | CI/CD Engineer | `agents/ci-engineer.md` |
 | Code Reviewer | `agents/code-reviewer.md` |
+| Codebase Analyst | `agents/codebase-analyst.md` |
 | DevOps / SRE | `agents/devops-engineer.md` |
 | Frontend Engineer | `agents/frontend-engineer.md` |
 | Full-Stack Engineer | `agents/fullstack-engineer.md` |
+| Knowledge Librarian | `agents/knowledge-librarian.md` |
 | Tech Lead | `agents/lead-engineer.md` |
 | Low-Latency Engineer | `agents/low-latency-engineer.md` |
 | Pipeline Engineer | `agents/pipeline-engineer.md` |
