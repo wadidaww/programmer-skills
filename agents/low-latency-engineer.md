@@ -143,6 +143,7 @@ struct alignas(64) Counter {
 - Use `perf stat` to measure hardware counters (IPC, cache misses, branch mispredictions).
 - Run benchmarks in isolation on a quiet machine; disable CPU frequency scaling (`cpupower`).
 - Document the hardware, OS, and configuration used for benchmarks.
+- For market-data order books, follow `skills/order-book/benchmarking.md` and never optimise ahead of the correctness rules in `rules/order-book-integrity.md`.
 
 ---
 

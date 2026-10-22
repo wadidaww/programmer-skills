@@ -8,8 +8,9 @@
 
 This repository provides GitHub Copilot with:
 
-- **Role-specific agent instructions** — backend, frontend, full-stack, low-latency, QA, CI/CD, production, security, research, and more
-- **Domain skills** — coding standards, backend patterns, frontend patterns, system design, testing, security, performance, and CI/CD
+- **Role-specific agent instructions** — backend, frontend, full-stack, low-latency, market data, QA, CI/CD, production, security, research, and more
+- **Domain skills** — coding standards, backend patterns, frontend patterns, system design, testing, security, performance, CI/CD, C++, and order books
+- **Rules** — short, non-negotiable constraints with IDs (e.g. `OB-7`) that agents must follow and reviewers cite
 - **Shared knowledge base protocol** — agents capture what they learn about a repository in `docs/knowledge/` so every other agent can retrieve it later
 - **Global engineering guidelines** — architecture principles, code review standards, and software development best practices
 
@@ -21,6 +22,11 @@ This repository provides GitHub Copilot with:
 programmer-skills/
 ├── .github/
 │   └── copilot-instructions.md     # Global Copilot coding guidelines
+│
+├── rules/                           # Non-negotiable constraints, cited by ID
+│   ├── cpp-build.md                 # CPP-*: C++17, Linux x86-64, reproducible build
+│   ├── deliverables.md              # DEL-*: README, AI-usage disclosure, benchmark honesty
+│   └── order-book-integrity.md      # OB-*: never publish an unproven book state
 │
 ├── agents/                          # Specialized role-based agent instructions
 │   ├── architect.md                 # System architect
@@ -34,6 +40,8 @@ programmer-skills/
 │   ├── knowledge-librarian.md       # Shared knowledge curation & retrieval
 │   ├── lead-engineer.md             # Tech lead / staff engineer
 │   ├── low-latency-engineer.md      # High-performance / low-latency engineer
+│   ├── market-data-engineer.md      # Feed handlers & order books from depth feeds
+│   ├── order-book-auditor.md        # Adversarial reviewer for order-book code
 │   ├── pipeline-engineer.md         # Data & ML pipeline engineer
 │   ├── production-engineer.md       # Production / reliability engineer
 │   ├── researcher.md                # Research engineer
@@ -45,8 +53,14 @@ programmer-skills/
     ├── ci-cd/                       # CI/CD pipeline patterns and best practices
     ├── codebase-documentation/      # Writing accurate, navigable repo documentation
     ├── coding-standards/            # Language-agnostic and language-specific standards
+    ├── cpp/                         # Modern C++17 projects: CMake, strict parsing, fast I/O, UB
     ├── frontend-patterns/           # UI component, state, and performance patterns
     ├── knowledge-management/        # Capture & retrieve shared codebase knowledge
+    ├── order-book/                  # Order book reconstruction from depth feeds
+    │   ├── benchmarking.md          #   Benchmarking a ~4M-message replay credibly
+    │   ├── feed-integrity.md        #   Sequencing, gaps, stale & bad data, sync state machine
+    │   ├── reconstruction.md        #   Fixed-point prices, book containers, atomic apply
+    │   └── testing.md               #   Scenario catalogue, ground-truth generator, fuzzing
     ├── performance/                 # Profiling, optimization, and low-latency techniques
     ├── security/                    # OWASP, secure coding, threat modelling
     ├── system-design/               # Architecture patterns and design principles
@@ -84,6 +98,36 @@ Invoke a skill directly in Copilot chat:
 @workspace Apply the patterns in skills/system-design/microservices.md
 ```
 
+### Rules (Non-Negotiable Constraints)
+
+Agents describe *who* does the work and skills describe *how*; rules state what must *always* hold. Each rule has an ID (`OB-7`, `CPP-5`, `DEL-3`) so tests, commits and review findings can cite it.
+
+Every rule file starts with GitHub Copilot `applyTo` front matter, so it can be dropped in as a path-specific instruction file:
+
+```bash
+mkdir -p .github/instructions
+cp rules/order-book-integrity.md .github/instructions/order-book-integrity.instructions.md
+```
+
+For other assistants, paste or reference the rule file from the tool's project instructions (for example `CLAUDE.md` or `.cursor/rules/`).
+
+### Problem Playbook: Order Book from a Recorded Depth Feed
+
+*Build an order book from a recorded exchange depth feed containing stale messages, sequence gaps and bad data; never publish a state you cannot prove is correct; benchmark on ~4 million messages; C++17 on Linux x86-64.*
+
+| Step | Load |
+|---|---|
+| 1. Constraints | `rules/order-book-integrity.md`, `rules/cpp-build.md`, `rules/deliverables.md` |
+| 2. Build it | `agents/market-data-engineer.md` — phased workflow from archive intake to hand-off |
+| 3. Domain knowledge | `skills/order-book/feed-integrity.md`, `skills/order-book/reconstruction.md` |
+| 4. Prove it | `skills/order-book/testing.md` |
+| 5. Measure it | `skills/order-book/benchmarking.md`, `skills/cpp/cpp.md` |
+| 6. Break it | `agents/order-book-auditor.md` — adversarial review before submission |
+
+```
+@workspace Follow agents/market-data-engineer.md under the rules in rules/. Start with Phase 0.
+```
+
 ### Shared Knowledge Base
 
 Agents do not work in isolation: every agent reads the repository's knowledge base before investigating, and writes durable findings back to it so the next agent starts informed.
@@ -117,6 +161,8 @@ Agents do not work in isolation: every agent reads the repository's knowledge ba
 | Knowledge Librarian | `agents/knowledge-librarian.md` |
 | Tech Lead | `agents/lead-engineer.md` |
 | Low-Latency Engineer | `agents/low-latency-engineer.md` |
+| Market Data Engineer | `agents/market-data-engineer.md` |
+| Order Book Auditor | `agents/order-book-auditor.md` |
 | Pipeline Engineer | `agents/pipeline-engineer.md` |
 | Production Engineer | `agents/production-engineer.md` |
 | Research Engineer | `agents/researcher.md` |
