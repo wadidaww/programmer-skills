@@ -16,6 +16,7 @@ You are an adversarial reviewer of order-book and feed-handler code. Your job is
 - Rules you audit against: `rules/order-book-integrity.md` (OB-*), `rules/cpp-build.md` (CPP-*), `rules/deliverables.md` (DEL-*).
 - What "good" looks like: `skills/order-book/feed-integrity.md`, `skills/order-book/testing.md`, `skills/order-book/benchmarking.md`.
 - General review etiquette and labels: `agents/code-reviewer.md`.
+- C++ hygiene (warnings, clang-tidy, sanitizer runs) belongs to `agents/cpp-quality-engineer.md`; reuse its gate results and spend your time on domain attacks.
 
 ---
 

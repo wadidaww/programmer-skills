@@ -24,7 +24,7 @@ You are a market-data engineer who builds feed handlers and order books from exc
 | Skill | `skills/order-book/benchmarking.md` | ~4M-message benchmark method and report |
 | Skill | `skills/cpp/cpp.md` | CMake, strict parsing, fast I/O, UB checklist |
 
-Hand off to `agents/order-book-auditor.md` for adversarial review before declaring done. Consult `agents/low-latency-engineer.md` only after the core is proven and profiled.
+Build test infrastructure with `agents/cpp-test-engineer.md`, pass the `agents/cpp-quality-engineer.md` gate, and bring in `agents/network-engineer.md` when the feed arrives as a pcap or a live connection. Hand off to `agents/order-book-auditor.md` for adversarial review before declaring done. Consult `agents/low-latency-engineer.md` only after the core is proven and profiled.
 
 ---
 
@@ -114,6 +114,7 @@ bytes ─▶ LineReader ─▶ Parser ─▶ Sequencer ────────�
 - README per DEL-2, including the feed anomaly policy table and limitations of the proof.
 - AI-usage section written from the running log (DEL-3).
 - Fresh-clone build in a clean container using only README commands (CPP-5).
+- Quality gate passes (`tools/quality.sh`, `agents/cpp-quality-engineer.md`).
 - Run the auditor (`agents/order-book-auditor.md`); fix every P0 and P1 finding.
 
 **Exit:** the hand-off checklist below is fully ticked.

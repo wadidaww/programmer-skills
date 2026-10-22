@@ -8,7 +8,7 @@
 
 This repository provides GitHub Copilot with:
 
-- **Role-specific agent instructions** — backend, frontend, full-stack, low-latency, market data, QA, CI/CD, production, security, research, and more
+- **Role-specific agent instructions** — backend, frontend, full-stack, low-latency, market data, networking, C++ quality and testing, QA, CI/CD, production, security, research, and more
 - **Domain skills** — coding standards, backend patterns, frontend patterns, system design, testing, security, performance, CI/CD, C++, and order books
 - **Rules** — short, non-negotiable constraints with IDs (e.g. `OB-7`) that agents must follow and reviewers cite
 - **Shared knowledge base protocol** — agents capture what they learn about a repository in `docs/knowledge/` so every other agent can retrieve it later
@@ -34,6 +34,8 @@ programmer-skills/
 │   ├── ci-engineer.md               # CI/CD engineer
 │   ├── code-reviewer.md             # Code review specialist
 │   ├── codebase-analyst.md          # Repository onboarding / knowledge capture
+│   ├── cpp-quality-engineer.md      # C++ quality gate: warnings, sanitizers, clang-tidy, review
+│   ├── cpp-test-engineer.md         # C++ test design, CTest, build matrix, coverage, flakiness
 │   ├── devops-engineer.md           # DevOps / SRE
 │   ├── frontend-engineer.md         # Frontend engineer
 │   ├── fullstack-engineer.md        # Full-stack engineer
@@ -41,6 +43,7 @@ programmer-skills/
 │   ├── lead-engineer.md             # Tech lead / staff engineer
 │   ├── low-latency-engineer.md      # High-performance / low-latency engineer
 │   ├── market-data-engineer.md      # Feed handlers & order books from depth feeds
+│   ├── network-engineer.md          # Sockets, multicast, capture/replay, host & NIC tuning
 │   ├── order-book-auditor.md        # Adversarial reviewer for order-book code
 │   ├── pipeline-engineer.md         # Data & ML pipeline engineer
 │   ├── production-engineer.md       # Production / reliability engineer
@@ -120,9 +123,11 @@ For other assistants, paste or reference the rule file from the tool's project i
 | 1. Constraints | `rules/order-book-integrity.md`, `rules/cpp-build.md`, `rules/deliverables.md` |
 | 2. Build it | `agents/market-data-engineer.md` — phased workflow from archive intake to hand-off |
 | 3. Domain knowledge | `skills/order-book/feed-integrity.md`, `skills/order-book/reconstruction.md` |
-| 4. Prove it | `skills/order-book/testing.md` |
-| 5. Measure it | `skills/order-book/benchmarking.md`, `skills/cpp/cpp.md` |
-| 6. Break it | `agents/order-book-auditor.md` — adversarial review before submission |
+| 4. Prove it | `skills/order-book/testing.md`, `agents/cpp-test-engineer.md` — suites, CTest, build matrix |
+| 5. Check it | `agents/cpp-quality-engineer.md` — one-command quality gate (`tools/quality.sh`) |
+| 6. Measure it | `skills/order-book/benchmarking.md`, `skills/cpp/cpp.md` |
+| 7. Break it | `agents/order-book-auditor.md` — adversarial review before submission |
+| Feed is a pcap or a live connection | `agents/network-engineer.md` — capture loss, framing, A/B arbitration |
 
 ```
 @workspace Follow agents/market-data-engineer.md under the rules in rules/. Start with Phase 0.
@@ -155,6 +160,8 @@ Agents do not work in isolation: every agent reads the repository's knowledge ba
 | CI/CD Engineer | `agents/ci-engineer.md` |
 | Code Reviewer | `agents/code-reviewer.md` |
 | Codebase Analyst | `agents/codebase-analyst.md` |
+| C++ Quality Engineer | `agents/cpp-quality-engineer.md` |
+| C++ Test Engineer | `agents/cpp-test-engineer.md` |
 | DevOps / SRE | `agents/devops-engineer.md` |
 | Frontend Engineer | `agents/frontend-engineer.md` |
 | Full-Stack Engineer | `agents/fullstack-engineer.md` |
@@ -162,6 +169,7 @@ Agents do not work in isolation: every agent reads the repository's knowledge ba
 | Tech Lead | `agents/lead-engineer.md` |
 | Low-Latency Engineer | `agents/low-latency-engineer.md` |
 | Market Data Engineer | `agents/market-data-engineer.md` |
+| Network Engineer | `agents/network-engineer.md` |
 | Order Book Auditor | `agents/order-book-auditor.md` |
 | Pipeline Engineer | `agents/pipeline-engineer.md` |
 | Production Engineer | `agents/production-engineer.md` |

@@ -142,17 +142,17 @@ std::string read_file(const char* path) {
     if (!f) throw std::runtime_error(std::string("cannot open ") + path);
     std::string data;
     char chunk[1 << 16];
-    std::size_t n;
+    std::size_t n = 0;
     while ((n = std::fread(chunk, 1, sizeof chunk, f)) > 0) data.append(chunk, n);
     const bool failed = std::ferror(f) != 0;
-    std::fclose(f);
+    static_cast<void>(std::fclose(f));                // read-only: a close error cannot lose data
     if (failed) throw std::runtime_error(std::string("read error on ") + path);
     return data;
 }
 
 // Calls fn(line) for each line without its '\n' or '\r\n'; handles a missing final newline.
 template <class Fn>
-void for_each_line(std::string_view data, Fn&& fn) {
+void for_each_line(std::string_view data, Fn fn) {
     while (!data.empty()) {
         const std::size_t nl = data.find('\n');
         std::string_view line = data.substr(0, nl);
@@ -210,6 +210,8 @@ public:
     ~OutBuffer() { flush(); }
     OutBuffer(const OutBuffer&) = delete;
     OutBuffer& operator=(const OutBuffer&) = delete;
+    OutBuffer(OutBuffer&&) = delete;
+    OutBuffer& operator=(OutBuffer&&) = delete;
 
     void put(std::string_view s) { buf_.append(s.data(), s.size()); maybe_flush(); }
     void put(char c) { buf_.push_back(c); }

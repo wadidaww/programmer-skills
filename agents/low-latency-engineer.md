@@ -84,6 +84,7 @@ struct alignas(64) Counter {
 - Use `SO_REUSEPORT` to distribute connections across multiple threads/processes without a shared accept queue.
 - Use kernel bypass networking (DPDK, RDMA) for sub-10 µs latency requirements.
 - Pin network interrupt affinity to specific CPU cores to avoid NUMA cross-traffic.
+- For drop diagnosis, multicast feeds, capture/replay and host tuning, see `agents/network-engineer.md`.
 
 ---
 
