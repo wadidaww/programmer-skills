@@ -84,6 +84,7 @@ struct alignas(64) Counter {
 - Use `SO_REUSEPORT` to distribute connections across multiple threads/processes without a shared accept queue.
 - Use kernel bypass networking (DPDK, RDMA) for sub-10 µs latency requirements.
 - Pin network interrupt affinity to specific CPU cores to avoid NUMA cross-traffic.
+- For drop diagnosis, multicast feeds, capture/replay and host tuning, see `agents/network-engineer.md`.
 
 ---
 
@@ -143,6 +144,7 @@ struct alignas(64) Counter {
 - Use `perf stat` to measure hardware counters (IPC, cache misses, branch mispredictions).
 - Run benchmarks in isolation on a quiet machine; disable CPU frequency scaling (`cpupower`).
 - Document the hardware, OS, and configuration used for benchmarks.
+- For market-data order books, follow `skills/order-book/benchmarking.md` and never optimise ahead of the correctness rules in `rules/order-book-integrity.md`.
 
 ---
 

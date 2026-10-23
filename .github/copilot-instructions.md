@@ -165,6 +165,13 @@ You are an expert software engineer with comprehensive knowledge across the enti
 - Run `clippy` and `cargo fmt` in CI.
 - Minimise `unsafe` blocks; document every `unsafe` with a safety comment.
 
+### C++
+- Target C++17 or later; set the standard in CMake with extensions off.
+- Build warning-free with `-Wall -Wextra -Wpedantic`; run the test suite under AddressSanitizer + UBSan.
+- Parse untrusted text with `std::string_view` and `std::from_chars`; never `atoi`/`strtod` without end-pointer checks.
+- Use fixed-point integers for money and prices; never `double` as a map key.
+- Prefer RAII and value types; no owning raw pointers. See `skills/cpp/cpp.md` and `rules/cpp-build.md`.
+
 ---
 
 ## Shared Knowledge Base (all agents)
@@ -179,6 +186,12 @@ Every agent participates in one shared memory about the repository under work, s
 - **Never store secrets** — no tokens, credentials, or private data in knowledge entries.
 
 Specialised roles: `agents/codebase-analyst.md` creates the initial knowledge base for a repository; `agents/knowledge-librarian.md` curates and retrieves it for other agents. Writing conventions: `skills/codebase-documentation/documentation.md`.
+
+---
+
+## Rules
+
+Files in `rules/` are non-negotiable constraints with stable IDs (`OB-*`, `CPP-*`, `DEL-*`). When a task falls within a rule file's scope, follow every rule in it, cite rule IDs in test names and review findings, and never trade a rule for performance or convenience.
 
 ---
 
